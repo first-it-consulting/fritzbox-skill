@@ -14,7 +14,7 @@ Control your AVM FRITZ!Box router and Smarthome devices via Python.
 
 ```bash
 # Clone repository
-git clone https://github.com/Deanghur/fritzbox-skill.git
+git clone https://github.com/first-it-consulting/fritzbox-skill.git
 cd fritzbox-skill
 
 # Install dependency
