@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.10", "3.12"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Check syntax
+      run: python3 -m py_compile fritzbox.py
+
+    - name: Run tests
+      run: bash test.sh
+
+  validate-skill:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Validate SKILL.md
+      run: |
+        if ! head -1 SKILL.md | grep -q "^---$"; then
+          echo "::error::SKILL.md missing YAML frontmatter"
+          exit 1
+        fi
+
+        if ! grep -q "^name:" SKILL.md; then
+          echo "::error::SKILL.md missing 'name' field"
+          exit 1
+        fi
+
+        if ! grep -q "^description:" SKILL.md; then
+          echo "::error::SKILL.md missing 'description' field"
+          exit 1
+        fi
+
+        echo "SKILL.md is valid"
+
+    - name: Validate _meta.json
+      run: |
+        python3 -c "
+        import json, sys
+        with open('_meta.json') as f:
+            meta = json.load(f)
+        required = ['slug', 'version', 'source']
+        for key in required:
+            if key not in meta:
+                print(f'::error::_meta.json missing \"{key}\" field')
+                sys.exit(1)
+        print('_meta.json is valid')
+        "

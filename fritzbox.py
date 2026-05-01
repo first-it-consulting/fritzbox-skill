@@ -536,6 +536,20 @@ def main():
                 print(f"Failed to switch device {args.ain}")
                 sys.exit(1)
 
+        elif args.smarthome_cmd == 'toggle':
+            devices = fb.get_smarthome_devices()
+            device = next((d for d in devices if d.get('identifier') == args.ain), None)
+            if device is None:
+                print(f"Device {args.ain} not found")
+                sys.exit(1)
+            current_state = device.get('state', '0')
+            turn_on = current_state != '1'
+            if fb.switch_smarthome_device(args.ain, turn_on):
+                print(f"Device {args.ain} toggled {'ON' if turn_on else 'OFF'}")
+            else:
+                print(f"Failed to toggle device {args.ain}")
+                sys.exit(1)
+
 
 if __name__ == '__main__':
     main()

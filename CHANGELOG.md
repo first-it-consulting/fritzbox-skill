@@ -1,0 +1,22 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.0.0] - 2026-05-01
+
+### Added
+- Initial release
+- WLAN control (on/off/status) for 2.4 GHz, 5 GHz, and guest bands
+- Network device listing via TR-064
+- Router info (model, firmware version, serial number)
+- Internet reconnect (force WAN termination)
+- Smarthome device listing via Homeautoswitch API
+- Smarthome device switch on/off by AIN
+- Smarthome device toggle (reads current state and inverts it)
+- `.env` file support for credentials
+- Command-line credential override via `--user`, `--password`, `--host`
