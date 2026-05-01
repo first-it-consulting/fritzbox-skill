@@ -7,6 +7,8 @@ Simple CLI tool to control AVM FRITZ!Box routers via TR-064 protocol.
 import argparse
 import sys
 import hashlib
+import ipaddress
+import socket
 import requests
 from xml.etree import ElementTree as ET
 from urllib.parse import quote
@@ -86,12 +88,35 @@ class FritzBox:
     }
     
     def __init__(self, host='fritz.box', user=None, password=None):
+        self._validate_host(host)
         self.host = host
         self.user = user or ''
         self.password = password or ''
         self.base_url = f'http://{host}:49000'
         self._sid = None
         self._challenge = None
+
+    @staticmethod
+    def _validate_host(host: str) -> None:
+        """Ensure the host resolves to a private or loopback address.
+
+        Credentials must never be sent to a public internet host.
+        Raises ValueError if the host is not local.
+        """
+        try:
+            ip_str = socket.gethostbyname(host)
+            addr = ipaddress.ip_address(ip_str)
+        except socket.gaierror:
+            raise ValueError(
+                f"Cannot resolve host '{host}'. "
+                "FRITZBOX_HOST must be a reachable local address."
+            )
+        if not (addr.is_private or addr.is_loopback or addr.is_link_local):
+            raise ValueError(
+                f"Host '{host}' resolves to public IP {ip_str}. "
+                "FRITZBOX_HOST must be a private/local address to prevent "
+                "credential exfiltration."
+            )
         
     def _get_challenge(self):
         """Get authentication challenge from FRITZ!Box."""
