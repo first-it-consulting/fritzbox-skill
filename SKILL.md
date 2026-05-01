@@ -24,6 +24,20 @@ Control your AVM FRITZ!Box router and Smarthome devices.
 - Advanced firewall configuration
 - Firmware updates
 
+## ⚠️ Confirmation Required
+
+The following commands make high-impact, hard-to-reverse changes to the network or connected devices.
+**Always ask the user for explicit confirmation before running them:**
+
+| Command | Impact |
+|---------|--------|
+| `wlan off` / `wlan on` | Disables or enables Wi-Fi — may cut network access |
+| `reconnect` | Forces internet disconnection and re-dial |
+| `smarthome switch <ain> off` / `on` | Turns a physical device on or off |
+| `smarthome toggle <ain>` | Inverts the current device state |
+
+Only invoke these after the user has clearly and explicitly requested the specific action.
+
 ## Prerequisites
 
 - FRITZ!Box must be accessible on the local network
@@ -37,8 +51,8 @@ Control your AVM FRITZ!Box router and Smarthome devices.
 Create a `.env` file:
 
 ```bash
-FRITZBOX_USER=openclaw
-FRITZBOX_PASSWORD=yourpassword
+FRITZBOX_USER=your_username
+FRITZBOX_PASSWORD=your_password
 FRITZBOX_HOST=fritz.box
 ```
 
@@ -115,3 +129,10 @@ python3 fritzbox.py --host 192.168.178.1 info
 
 - **TR-064** - Router functions (WLAN, hosts, device info)
 - **Homeautoswitch API** - Smarthome device control
+
+## Security Guidance
+
+- **Least privilege:** Create a dedicated FRITZ!Box user with limited permissions for agent use rather than using the admin account.
+- **Protect credentials:** Keep `.env` outside version control (it is listed in `.gitignore`). Restrict file permissions: `chmod 600 .env`.
+- **Verify the host:** Ensure `FRITZBOX_HOST` points to your own local router. Do not route credentials through untrusted hosts.
+- **Scope of access:** The configured account can authorize all router and smarthome changes supported by this skill. Treat the credentials with the same care as router admin credentials.

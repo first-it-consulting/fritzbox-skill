@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-05-01
+
+### Fixed
+- Security: add explicit confirmation-required table in `SKILL.md` for high-impact commands (wlan off/on, reconnect, smarthome switch/toggle) to address ClawScan Tool Misuse finding
+- Security: add Security Guidance section to `SKILL.md` recommending least-privilege FRITZ!Box account, `.env` file permission hardening, and host verification (ClawScan Identity & Privilege Abuse finding)
+- Security: replace example credentials in `SKILL.md` `.env` block with safe placeholders
+
 ## [1.0.0] - 2026-05-01
 
 ### Added
