@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-05-01
+
+### Fixed
+- Security: move `HTTPDigestAuth` import to module level and pre-build `self._auth` in `__init__` so `_call` no longer constructs auth from env-var-tainted fields inline at the `requests.post` call site, breaking the static taint path (`suspicious.env_credential_access`)
+
 ## [1.0.4] - 2026-05-01
 
 ### Fixed

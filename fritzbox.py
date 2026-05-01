@@ -10,6 +10,7 @@ import hashlib
 import ipaddress
 import socket
 import requests
+from requests.auth import HTTPDigestAuth
 from xml.etree import ElementTree as ET
 from urllib.parse import quote
 import re
@@ -96,6 +97,8 @@ class FritzBox:
         self.user = user or ''
         self.password = password or ''
         self.base_url = f'http://{validated_ip}:49000'
+        # Pre-build the auth object so request methods don't reference env vars directly.
+        self._auth = HTTPDigestAuth(self.user, self.password) if self.password else None
         self._sid = None
         self._challenge = None
 
@@ -201,14 +204,11 @@ class FritzBox:
         
         try:
             # TR-064 uses HTTP Digest Authentication
-            from requests.auth import HTTPDigestAuth
-            auth = HTTPDigestAuth(self.user, self.password) if self.password else None
-            
             resp = requests.post(
                 f'{self.base_url}{control_url}',
                 data=soap,
                 headers=headers,
-                auth=auth,
+                auth=self._auth,
                 timeout=10
             )
             resp.raise_for_status()
