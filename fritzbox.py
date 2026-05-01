@@ -88,18 +88,23 @@ class FritzBox:
     }
     
     def __init__(self, host='fritz.box', user=None, password=None):
-        self._validate_host(host)
-        self.host = host
+        validated_ip = self._validate_host(host)
+        # Use the resolved IP (not the raw env string) so credentials are never
+        # sent to an env-controlled hostname — the URL is derived from a
+        # DNS-validated private IP only.
+        self.host = validated_ip
         self.user = user or ''
         self.password = password or ''
-        self.base_url = f'http://{host}:49000'
+        self.base_url = f'http://{validated_ip}:49000'
         self._sid = None
         self._challenge = None
 
     @staticmethod
-    def _validate_host(host: str) -> None:
-        """Ensure the host resolves to a private or loopback address.
+    def _validate_host(host: str) -> str:
+        """Resolve host and ensure it is a private or loopback address.
 
+        Returns the resolved IP string so the caller can use the validated IP
+        directly instead of the original (potentially env-supplied) hostname.
         Credentials must never be sent to a public internet host.
         Raises ValueError if the host is not local.
         """
@@ -117,6 +122,7 @@ class FritzBox:
                 "FRITZBOX_HOST must be a private/local address to prevent "
                 "credential exfiltration."
             )
+        return ip_str
         
     def _get_challenge(self):
         """Get authentication challenge from FRITZ!Box."""

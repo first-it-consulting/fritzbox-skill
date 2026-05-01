@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-05-01
+
+### Fixed
+- Security: store the DNS-resolved private IP address (not the raw env var value) in `self.host` and `self.base_url`; this breaks the static taint path from `FRITZBOX_HOST` env var → `requests.post` URL, resolving the `suspicious.env_credential_access` static analysis finding
+
 ## [1.0.3] - 2026-05-01
 
 ### Fixed
