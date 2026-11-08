@@ -76,8 +76,10 @@ python3 fritzbox.py smarthome switch "08761 0311726" off
 ### With explicit credentials
 
 ```bash
-python3 fritzbox.py --user admin --password secret --host 192.168.178.1 info
+python3 fritzbox.py --user admin --password YOUR_PASSWORD --host 192.168.178.1 info
 ```
+
+> **⚠️ Security Warning:** Passing passwords on the command line may expose them in shell history, terminal logs, and process listings. Use the `.env` file method instead whenever possible.
 
 ## Smarthome Device Info
 
