@@ -1,6 +1,6 @@
 ---
 name: fritzbox
-description: Control AVM FRITZ!Box routers and Smarthome devices via TR-064 and Web API. Use when the user wants to manage their FRITZ!Box router (WLAN, connected devices, reconnect) or control FRITZ!DECT smarthome devices (smart plugs, thermostats). Triggers on phrases like "fritzbox", "fritz box", "router", "wlan", "wifi", "smarthome", "dect", "smart plug", "steckdose".
+description: Control AVM FRITZ!Box routers and Smarthome devices via TR-064 and Web API. Use ONLY when the user explicitly mentions "fritzbox", "fritz box", "FRITZ!Box", "FRITZbox", "dect", "FRITZ!DECT", "smart plug" (in context of FRITZ!Box), or "steckdose" (in context of FRITZ!Box). Do NOT trigger on generic terms like "router", "wlan", "wifi", or "smarthome" without explicit FRITZ!Box context.
 metadata: {"clawdbot":{"emoji":"📡","requires":{"bins":["python3"],"env":["FRITZBOX_PASSWORD","FRITZBOX_HOST"]},"primaryEnv":"FRITZBOX_HOST"}}
 ---
 

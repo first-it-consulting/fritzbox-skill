@@ -22,7 +22,6 @@ def load_env_file(path='.env'):
     env_paths = [
         path,
         os.path.join(os.path.dirname(__file__), '..', '.env'),
-        os.path.expanduser('~/.openclaw/workspace-main/skills/fritzbox/.env')
     ]
     
     for env_path in env_paths:
