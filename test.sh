@@ -20,6 +20,12 @@ fi
 # Check syntax
 python3 -m py_compile fritzbox.py && echo "✅ fritzbox.py syntax OK" || { echo "❌ Syntax error in fritzbox.py"; exit 1; }
 
+# Check required Python packages
+python3 -c "import requests" 2>/dev/null && echo "✅ requests dependency available" || { echo "❌ Missing dependency: requests (run: pip install -r requirements.txt)"; exit 1; }
+
+# Check fritzbox imports correctly
+python3 -c "import fritzbox" 2>/dev/null && echo "✅ fritzbox imports OK" || { echo "❌ fritzbox.py import failed"; exit 1; }
+
 # Check required files
 for f in SKILL.md README.md requirements.txt _meta.json; do
     if [ ! -f "$f" ]; then
